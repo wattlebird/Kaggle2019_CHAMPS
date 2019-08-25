@@ -58,7 +58,7 @@ for bond in pd.unique(train['type']):
                      feature_fraction=0.7, subsample=0.7, reg_alpha=0.1, reg_lambda=0.3, device_type='gpu',
                     **setting.param[bond])
     lgbm.fit(X, Y, eval_metric='regression_l1', verbose=100)
-    printf(f"Saving model as {bond}.5000.lightgbm")
+    print(f"Saving model as {bond}.5000.lightgbm")
     lgbm.booster_.save_model(f"{bond}.5000.lightgbm")
     model[bond] = lgbm
 
