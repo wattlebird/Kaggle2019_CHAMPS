@@ -55,7 +55,7 @@ for bond in pd.unique(train['type']):
     X = data[train['type'] == bond]
     Y = y[train['type'] == bond]
     lgbm = LGBMRegressor(objective='regression_l1', n_estimators=5000, learning_rate=0.1, subsample_freq=1, \
-                     feature_fraction=0.7, subsample=0.7, reg_alpha=0.1, reg_lambda=0.3, device_type='gpu',
+                    reg_alpha=0.1, reg_lambda=0.3, device_type='gpu',
                     **setting.param[bond])
     lgbm.fit(X, Y, eval_metric='regression_l1', verbose=100)
     print(f"Saving model as {bond}.5000.lightgbm")
@@ -75,4 +75,4 @@ for bond in pd.unique(train['type']):
     X = test[test_['type'] == bond]
     Y = model[bond].predict(X)
     submission.loc[test_['type'] == bond, 'scalar_coupling_constant'] = Y
-submission.to_csv("submission_08_25_01.csv", index=False)
+submission.to_csv("submission_08_29_01.csv", index=False)

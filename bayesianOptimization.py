@@ -54,15 +54,15 @@ train = pd.read_csv(f"{DATA}/train.csv", dtype={
 }, usecols=['type', 'scalar_coupling_constant'])
 y = train.scalar_coupling_constant
 
-def foo(typ, subsample, bagging_fraction):
+def foo(typ, bagging_fraction, feature_fraction):
     X, Xv, yt, yv = train_test_split(data[train['type']==typ], y[train['type']==typ], test_size=0.3, random_state=233)
     lgbm = LGBMRegressor(
         objective='regression_l1',
         n_estimators=1000,
         learning_rate=0.1, 
-        subsample_freq=1, 
-        subsample=subsample, 
+        bagging_freq=1, 
         bagging_fraction=bagging_fraction, 
+        feature_fraction=feature_fraction, 
         reg_alpha=0.1, 
         reg_lambda=0.3,
         device_type='gpu',
@@ -75,7 +75,7 @@ for bond in pd.unique(train['type']):
     optimizer = BayesianOptimization(
         f=partial(foo, typ=bond),
         pbounds={
-            'subsample': (0.1, 0.99),
+            'feature_fraction': (0.1, 0.99),
             'bagging_fraction': (0.1, 0.99)
         },
         random_state=233,
